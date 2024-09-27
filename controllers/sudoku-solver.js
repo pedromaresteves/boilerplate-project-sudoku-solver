@@ -39,6 +39,7 @@ class SudokuSolver {
   checkRegionPlacement(puzzleString, row, column, value) {
     const puzzleStringSquares = [[]];
     const puzzleStringed = puzzleString.split("");
+    if (!column || !row) return false
     const region = calculateRegion(row, column);
     let puzzleZone = 0;
     for (let i = 0; i < puzzleStringed.length; i++) {
@@ -55,6 +56,31 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
+    const positionsToFill = convertArrPositionIntoCoordinate(puzzleString);
+    let solution = puzzleString.split('');
+    for (let i = 0; i < solution.length; i++) {
+      if (solution[i] === ".") {
+        let obviousSingles = this.obviousSingles(solution.join(""), positionsToFill[i]);
+        if (obviousSingles.length === 1) {
+          solution[i] = obviousSingles[0].toString()
+          i = 0;
+        }
+      }
+    }
+    return solution.join("");
+  }
+
+  obviousSingles(puzzleString, position) {
+    const possibleSolutionsForThisCell = [];
+    for (let i = 1; i <= 9; i++) {
+      let validForThisRow = this.checkRowPlacement(puzzleString, position[0], i.toString());
+      let validForThisColumn = this.checkColPlacement(puzzleString, position[1], i.toString());
+      let validForThisRegion = this.checkRegionPlacement(puzzleString, position[0], position[1], i.toString());
+      if (validForThisRow && validForThisColumn && validForThisRegion) {
+        possibleSolutionsForThisCell.push(i);
+      }
+    }
+    return possibleSolutionsForThisCell
   }
 }
 
@@ -75,6 +101,22 @@ const calculateRegion = (row, column) => {
     }
   }
   return regionBlocksByColumn[columnBlock][rowBlock]
+}
+
+const convertArrPositionIntoCoordinate = (puzzleString) => {
+  const rows = "ABCDEFGHI";
+  let column = 0;
+  let currentRowIndex = 0;
+  const positionsToFill = {}
+  for (let i = 0; i <= puzzleString.length; i++) {
+    if (i > 1 && i % 9 === 0) {
+      currentRowIndex++;
+      column = 0;
+    }
+    column++;
+    if (puzzleString[i] === '.') positionsToFill[i] = `${rows[currentRowIndex]}${column}`
+  }
+  return positionsToFill;
 }
 
 module.exports = SudokuSolver;

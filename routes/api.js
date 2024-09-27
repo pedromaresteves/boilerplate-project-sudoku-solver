@@ -28,12 +28,14 @@ module.exports = function (app) {
         conflicts.push("region")
       }
       if (conflicts.length) validationData.conflict = conflicts;
-      res.send(validationData)
+      return res.send(validationData)
     });
 
   app.route('/api/solve')
     .post((req, res) => {
-      const isValidated = solver.validate(req.body.puzzle)
-      console.log(isValidated)
+      const isValidated = solver.validate(req.body.puzzle);
+      if (!isValidated) return res.send({ error: "Puzzle cannot be solved" })
+      const solution = solver.solve(req.body.puzzle)
+      return res.send({ solution: solution })
     });
 };
