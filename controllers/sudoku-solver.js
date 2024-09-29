@@ -63,7 +63,7 @@ class SudokuSolver {
         let obviousSingles = this.obviousSingles(solution.join(""), positionsToFill[i]);
         if (obviousSingles.length === 1) {
           solution[i] = obviousSingles[0].toString()
-          i = 0;
+          i = -1;
         }
       }
     }
