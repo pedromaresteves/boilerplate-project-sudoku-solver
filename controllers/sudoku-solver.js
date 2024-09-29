@@ -56,7 +56,7 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
-    const positionsToFill = convertArrPositionIntoCoordinate(puzzleString);
+    const positionsToFill = getDotsCoordinates(puzzleString);
     let solution = puzzleString.split('');
     for (let i = 0; i < solution.length; i++) {
       if (solution[i] === ".") {
@@ -103,7 +103,7 @@ const calculateRegion = (row, column) => {
   return regionBlocksByColumn[columnBlock][rowBlock]
 }
 
-const convertArrPositionIntoCoordinate = (puzzleString) => {
+const getDotsCoordinates = (puzzleString) => {
   const rows = "ABCDEFGHI";
   let column = 0;
   let currentRowIndex = 0;
