@@ -34,8 +34,8 @@ module.exports = function (app) {
   app.route('/api/solve')
     .post((req, res) => {
       const isValidated = solver.validate(req.body.puzzle);
-      if (!isValidated) return res.send({ error: "Puzzle cannot be solved" })
-      const solution = solver.solve(req.body.puzzle)
+      const solution = solver.solve(req.body.puzzle);
+      if (!isValidated || !solution) return res.send({ error: "Puzzle cannot be solved" })
       return res.send({ solution: solution })
     });
 };

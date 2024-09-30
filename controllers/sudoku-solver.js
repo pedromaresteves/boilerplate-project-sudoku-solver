@@ -67,7 +67,9 @@ class SudokuSolver {
         }
       }
     }
-    return solution.join("");
+    const solutionString = solution.join("");
+    if (solutionString.indexOf(".") !== -1) return false;
+    return solutionString;
   }
 
   obviousSingles(puzzleString, position) {
