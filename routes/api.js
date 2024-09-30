@@ -11,10 +11,15 @@ module.exports = function (app) {
       const validationData = { valid: true }
       const conflicts = [];
       const { puzzle, coordinate, value } = req.body;
-      const isValueValidForSelectedRow = solver.checkRowPlacement(puzzle, coordinate[0], value);
-      const isValueValidForSelectedColumn = solver.checkColPlacement(puzzle, coordinate[1], value);
-      const IsValueValidForSquare = solver.checkRegionPlacement(puzzle, coordinate[0], coordinate[1], value);
-      if (!value && !coordinate) return res.send({ error: "Required field(s) missing" })
+      if (!value || !coordinate || !puzzle) return res.send({ error: "Required field(s) missing" })
+      if (!["A", "B", "C", "D", "E", "F", "J"].includes(coordinate[0].toUpperCase())) return res.send({ error: "Invalid coordinate" })
+      if (coordinate.substring(1).length > 1 || coordinate[1] === 0) return res.send({ error: "Invalid coordinate" })
+      if (Number(value) < 1 || Number(value) > 9) return res.send({ error: "Invalid value" })
+      const rowLetter = coordinate[0].toUpperCase();
+      const columnNumber = coordinate[1];
+      const isValueValidForSelectedRow = solver.checkRowPlacement(puzzle, rowLetter, value.toString());
+      const isValueValidForSelectedColumn = solver.checkColPlacement(puzzle, columnNumber, value.toString());
+      const isValueValidForSquare = solver.checkRegionPlacement(puzzle, rowLetter, columnNumber, value.toString());
       if (!isValueValidForSelectedRow) {
         validationData.valid = false;
         conflicts.push("row")
@@ -23,7 +28,7 @@ module.exports = function (app) {
         validationData.valid = false;
         conflicts.push("column")
       }
-      if (!IsValueValidForSquare) {
+      if (!isValueValidForSquare) {
         validationData.valid = false;
         conflicts.push("region")
       }
