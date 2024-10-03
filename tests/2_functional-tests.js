@@ -124,7 +124,6 @@ suite('Functional Tests', () => {
         const coordinate = "A1";
         const value = "A";
         chai.request(server).post("/api/check").send({ puzzle, coordinate, value }).then(res => {
-            console.log(res.body)
             assert.equal(res.body.error, "Invalid value");
             done();
         });
