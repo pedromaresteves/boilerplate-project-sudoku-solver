@@ -2,8 +2,9 @@ class SudokuSolver {
 
   validate(puzzleString) {
     const invalidCharsRegex = /[^1-9\.]/g;
-    if (puzzleString.length !== 81) return false
-    if (puzzleString.match(invalidCharsRegex)) return false
+    if (!puzzleString || puzzleString.length === 0) return { error: 'Required field missing' }
+    if (puzzleString.length !== 81) return { error: 'Expected puzzle to be 81 characters long' }
+    if (puzzleString.match(invalidCharsRegex)) return { error: 'Invalid characters in puzzle' }
     return true
   }
 

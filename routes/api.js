@@ -11,7 +11,9 @@ module.exports = function (app) {
       const validationData = { valid: true }
       const conflicts = [];
       const { puzzle, coordinate, value } = req.body;
-      if (!value || !coordinate || !puzzle) return res.send({ error: "Required field(s) missing" })
+      const isPuzzleValid = solver.validate(puzzle);
+      if (isPuzzleValid !== true) return res.send(isPuzzleValid)
+      if (!value || !coordinate) return res.send({ error: "Required field missing" })
       if (!["A", "B", "C", "D", "E", "F", "J"].includes(coordinate[0].toUpperCase())) return res.send({ error: "Invalid coordinate" })
       if (coordinate.substring(1).length > 1 || coordinate[1] === 0) return res.send({ error: "Invalid coordinate" })
       if (isNaN(Number(value)) || Number(value) < 1 || Number(value) > 9) return res.send({ error: "Invalid value" })
@@ -40,7 +42,8 @@ module.exports = function (app) {
     .post((req, res) => {
       const isValidated = solver.validate(req.body.puzzle);
       const solution = solver.solve(req.body.puzzle);
-      if (!isValidated || !solution) return res.send({ error: "Puzzle cannot be solved" })
+      if (isValidated !== true) return res.send(isValidated);
+      if (!solution) return res.send({ error: "Puzzle cannot be solved" })
       return res.send({ solution: solution })
     });
 };
