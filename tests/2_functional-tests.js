@@ -96,7 +96,7 @@ suite('Functional Tests', () => {
         const puzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
         const coordinate = "A1";
         chai.request(server).post("/api/check").send({ puzzle, coordinate }).then(res => {
-            assert.equal(res.body.error, "Required field missing");
+            assert.equal(res.body.error, "Required field(s) missing");
             done();
         });
     });
@@ -104,7 +104,7 @@ suite('Functional Tests', () => {
         const puzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
         const value = 5;
         chai.request(server).post("/api/check").send({ puzzle, value }).then(res => {
-            assert.equal(res.body.error, "Required field missing");
+            assert.equal(res.body.error, "Required field(s) missing");
             done()
         });
     });
@@ -112,7 +112,7 @@ suite('Functional Tests', () => {
         const coordinate = "A1";
         const value = 5;
         chai.request(server).post("/api/check").send({ coordinate, value }).then(res => {
-            assert.deepEqual(res.body.error, "Required field missing");
+            assert.deepEqual(res.body.error, "Required field(s) missing");
             done();
         });
     });
