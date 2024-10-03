@@ -19,6 +19,12 @@ suite('Functional Tests', () => {
             done();
         });
     });
+    test("Get error if no puzzle string is sent 2", function (done) {
+        chai.request(server).post("/api/solve").send().then(res => {
+            assert.deepEqual(res.body, { error: 'Required field missing' })
+            done();
+        });
+    });
     test("Get error if invalid characters are sent", function (done) {
         const invalidCharactersPuzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.A";
         chai.request(server).post("/api/solve").send({ puzzle: invalidCharactersPuzzle }).then(res => {

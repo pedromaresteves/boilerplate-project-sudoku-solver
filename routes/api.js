@@ -19,9 +19,11 @@ module.exports = function (app) {
       if (isNaN(Number(value)) || Number(value) < 1 || Number(value) > 9) return res.send({ error: "Invalid value" })
       const rowLetter = coordinate[0].toUpperCase();
       const columnNumber = coordinate[1];
+      const allCordinates = solver.getAllCoordinates(puzzle);
       const isValueValidForSelectedRow = solver.checkRowPlacement(puzzle, rowLetter, value.toString());
       const isValueValidForSelectedColumn = solver.checkColPlacement(puzzle, columnNumber, value.toString());
       const isValueValidForSquare = solver.checkRegionPlacement(puzzle, rowLetter, columnNumber, value.toString());
+      if (allCordinates[coordinate] === value) return res.send(validationData)
       if (!isValueValidForSelectedRow) {
         validationData.valid = false;
         conflicts.push("row")
@@ -41,8 +43,8 @@ module.exports = function (app) {
   app.route('/api/solve')
     .post((req, res) => {
       const isValidated = solver.validate(req.body.puzzle);
-      const solution = solver.solve(req.body.puzzle);
       if (isValidated !== true) return res.send(isValidated);
+      const solution = solver.solve(req.body.puzzle);
       if (!solution) return res.send({ error: "Puzzle cannot be solved" })
       return res.send({ solution: solution })
     });
