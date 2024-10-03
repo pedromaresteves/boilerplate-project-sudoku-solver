@@ -124,4 +124,9 @@ suite('Solver Unit tests', () => {
         });
         done();
     });
+    test('Invalid puzzle strings fail the solver', function (done) {
+        const invalidPuzzle = '999..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..'
+        assert.equal(solver.solve(invalidPuzzle), false)
+        done();
+    });
 });
