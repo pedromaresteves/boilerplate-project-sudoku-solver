@@ -15,7 +15,7 @@ module.exports = function (app) {
       const isPuzzleValid = solver.validate(puzzle);
       if (isPuzzleValid !== true) return res.send(isPuzzleValid);
       if (!["A", "B", "C", "D", "E", "F", "G", "H", "I"].includes(coordinate[0].toUpperCase())) return res.send({ error: 'Invalid coordinate' })
-      if (coordinate.substring(1).length > 1 || coordinate[1] == 0) return res.send({ error: 'Invalid coordinate' })
+      if (coordinate.substring(1).length > 1 || coordinate[1] == 0 || !coordinate[1]) return res.send({ error: 'Invalid coordinate' })
       if (isNaN(Number(value)) || Number(value) < 1 || Number(value) > 9) return res.send({ error: 'Invalid value' })
       const rowLetter = coordinate[0].toUpperCase();
       const columnNumber = coordinate[1];
