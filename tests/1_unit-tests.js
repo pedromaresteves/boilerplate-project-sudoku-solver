@@ -30,13 +30,13 @@ suite('Valid String Unit tests', () => {
     test('Puzzle string cannot be over 81 characters', function (done) {
         const stringOver81Characters = "123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.11";
         const shouldBeNotValid = solver.validate(stringOver81Characters);
-        assert.equal(shouldBeNotValid, false);
+        assert.deepEqual(shouldBeNotValid, { error: 'Expected puzzle to be 81 characters long' });
         done();
     });
     test('Puzzle string cannot be under 81 characters', function (done) {
         const stringWithLessThan81Characters = "123456789.";
         const shouldBeNotValid = solver.validate(stringWithLessThan81Characters);
-        assert.equal(shouldBeNotValid, false);
+        assert.deepEqual(shouldBeNotValid, { error: 'Expected puzzle to be 81 characters long' });
         done();
     });
     test('Puzzle string cannot have letters or special characters', function (done) {
@@ -44,8 +44,8 @@ suite('Valid String Unit tests', () => {
         const characterWith81CharactersButWithSpecialCharacters = "123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.A";
         const shouldBeNotValid = solver.validate(characterWith81CharactersButWithLetters);
         const shouldBeNotValidWithSpecialCharacters = solver.validate(characterWith81CharactersButWithSpecialCharacters);
-        assert.equal(shouldBeNotValid, false);
-        assert.equal(shouldBeNotValidWithSpecialCharacters, false);
+        assert.deepEqual(shouldBeNotValid, { error: 'Invalid characters in puzzle' });
+        assert.deepEqual(shouldBeNotValidWithSpecialCharacters, { error: 'Invalid characters in puzzle' });
         done();
     });
     test('Puzzle string must have 81 characters and only have numbers from 1 to 9 and dots', function (done) {
@@ -54,7 +54,7 @@ suite('Valid String Unit tests', () => {
         const shouldBeValid = solver.validate(characterWith81Characters);
         const shouldBeNotValid = solver.validate(characterWith81CharactersWithZeros);
         assert.equal(shouldBeValid, true);
-        assert.equal(shouldBeNotValid, false);
+        assert.deepEqual(shouldBeNotValid, { error: 'Invalid characters in puzzle' });
         done();
     });
 });

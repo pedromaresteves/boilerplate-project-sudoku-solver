@@ -15,21 +15,21 @@ suite('Functional Tests', () => {
     });
     test("Get error if no puzzle string is sent", function (done) {
         chai.request(server).post("/api/solve").send({ puzzle: '' }).then(res => {
-            assert.deepEqual(res.body, { error: 'Puzzle cannot be solved' })
+            assert.deepEqual(res.body, { error: 'Required field missing' })
             done();
         });
     });
     test("Get error if invalid characters are sent", function (done) {
         const invalidCharactersPuzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.A";
         chai.request(server).post("/api/solve").send({ puzzle: invalidCharactersPuzzle }).then(res => {
-            assert.deepEqual(res.body, { error: 'Puzzle cannot be solved' })
+            assert.deepEqual(res.body, { error: 'Invalid characters in puzzle' })
             done();
         });
     });
     test("Get error if puzzle string has not the correct length", function (done) {
         const notCorrectLengthPuzzle = "9";
         chai.request(server).post("/api/solve").send({ puzzle: notCorrectLengthPuzzle }).then(res => {
-            assert.deepEqual(res.body, { error: 'Puzzle cannot be solved' })
+            assert.deepEqual(res.body, { error: 'Expected puzzle to be 81 characters long' })
             done();
         });
     });
@@ -43,7 +43,7 @@ suite('Functional Tests', () => {
     test("Get error if puzzle string has not the correct length", function (done) {
         const notCorrectLengthPuzzle = "9";
         chai.request(server).post("/api/solve").send({ puzzle: notCorrectLengthPuzzle }).then(res => {
-            assert.deepEqual(res.body, { error: 'Puzzle cannot be solved' })
+            assert.deepEqual(res.body, { error: 'Expected puzzle to be 81 characters long' })
             done();
         });
     });
@@ -90,7 +90,7 @@ suite('Functional Tests', () => {
         const puzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
         const coordinate = "A1";
         chai.request(server).post("/api/check").send({ puzzle, coordinate }).then(res => {
-            assert.equal(res.body.error, "Required field(s) missing");
+            assert.equal(res.body.error, "Required field missing");
             done();
         });
     });
@@ -98,7 +98,7 @@ suite('Functional Tests', () => {
         const puzzle = "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
         const value = 5;
         chai.request(server).post("/api/check").send({ puzzle, value }).then(res => {
-            assert.equal(res.body.error, "Required field(s) missing");
+            assert.equal(res.body.error, "Required field missing");
             done()
         });
     });
@@ -106,7 +106,7 @@ suite('Functional Tests', () => {
         const coordinate = "A1";
         const value = 5;
         chai.request(server).post("/api/check").send({ coordinate, value }).then(res => {
-            assert.deepEqual(res.body.error, "Required field(s) missing");
+            assert.deepEqual(res.body.error, "Required field missing");
             done();
         });
     });
