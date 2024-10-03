@@ -85,6 +85,22 @@ class SudokuSolver {
     }
     return possibleSolutionsForThisCell
   }
+
+  getAllCoordinates(puzzleString) {
+    const rows = "ABCDEFGHI";
+    let column = 0;
+    let currentRowIndex = 0;
+    const allCoordinates = {}
+    for (let i = 0; i < puzzleString.length; i++) {
+      if (i > 1 && i % 9 === 0) {
+        currentRowIndex++;
+        column = 0;
+      }
+      column++;
+      allCoordinates[`${rows[currentRowIndex]}${column}`] = puzzleString[i];
+    }
+    return allCoordinates;
+  }
 }
 
 const calculateRegion = (row, column) => {
